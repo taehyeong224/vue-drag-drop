@@ -10,6 +10,8 @@
 </template>
 
 <script>
+  import amqp from 'amqp'
+
   export default {
     name: 'app',
     data() {
@@ -29,6 +31,29 @@
           element: null
         }
       }
+    },
+    created: function () {
+      let connection = amqp.createConnection({host: '127.0.0.1'})
+
+      // add this for better debuging
+      connection.on('error', (e) => {
+        console.log("Error from amqp: ", e)
+      });
+
+      // Wait for connection to become established.
+      connection.on('ready', function () {
+        // Use the default 'amq.topic' exchange
+        connection.queue('my-queue', function (q) {
+          // Catch all messages
+          q.bind('#')
+
+          // Receive messages
+          q.subscribe(function (message) {
+            // Print messages to stdout
+            console.log(message)
+          })
+        })
+      })
     },
     mounted: function () {
       this.imageDom = window.document.getElementsByClassName("image-logo");
