@@ -5,5 +5,7 @@ node_js:
 sudo: false
 script:
   - npm i -g pm2
-after_success:
   - pm2 deploy dev update 
+after_success:
+  - echo 'complete'
+  
