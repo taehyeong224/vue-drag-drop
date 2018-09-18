@@ -4,8 +4,10 @@ node_js:
 #before_install:
 sudo: false
 script:
-  - npm i -g pm2
-  - pm2 deploy dev update 
+  #- npm i -g pm2
+  - ls
+  - pwd
+  - cat ~/.ssh/id_rsa.pub  
 after_success:
   - echo 'complete'
   
